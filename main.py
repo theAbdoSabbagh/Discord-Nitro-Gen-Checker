@@ -24,3 +24,40 @@ def valid_int(text):
       error("Numbers are accepted only.")
     else:
       return int(to_generate)
+
+def do_request(the_list, times):
+  for i in range(int(times)):
+    code = create_codes(the_list)
+    the_list.append(code)
+    response = requests.get(f"https://discord.com/api/v9/entitlements/gift-codes/{code}?with_application=false&with_subscription_plan=true")
+    if response.status_code == 200:
+      valid(code)
+    else:
+      invalid(code)
+
+threads = []
+
+def thread_do_request(threads_times, times, the_list):
+  # I. Am. Speed.
+  better_times = int(round(times/threads_times))
+  for i in range(int(threads_times)):
+    t = threading.Thread(target = do_request, args = [the_list,better_times])
+    t.daemon = True
+    threads.append(t)
+  for i in range(int(threads_times)):
+    threads[i].start()
+  for i in range(int(threads_times)):
+    threads[i].join()
+
+def run_until_find():
+  the_list = []
+  while True:
+    try:
+      code = create_codes(the_list)
+      the_list.append(code)
+      response = requests.get(f"https://discord.com/api/v9/entitlements/gift-codes/{code}?with_application=false&with_subscription_plan=true")
+      if response.status_code == 200:
+        valid(code)
+        return
+    except:
+      break
