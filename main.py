@@ -61,3 +61,65 @@ def run_until_find():
         return
     except:
       break
+
+async def main():
+  made = []
+  if os.name == 'nt': # CLS clears the screen, here we check if the OS is windows and then execute the command, CLS works on windows only.
+    os.system('cls')
+  print("""███╗   ██╗██╗████████╗██████╗  ██████╗      ██████╗ ██████╗ ██████╗ ███████╗███████╗
+████╗  ██║██║╚══██╔══╝██╔══██╗██╔═══██╗    ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔════╝
+██╔██╗ ██║██║   ██║   ██████╔╝██║   ██║    ██║     ██║   ██║██║  ██║█████╗  ███████╗
+██║╚██╗██║██║   ██║   ██╔══██╗██║   ██║    ██║     ██║   ██║██║  ██║██╔══╝  ╚════██║
+██║ ╚████║██║   ██║   ██║  ██║╚██████╔╝    ╚██████╗╚██████╔╝██████╔╝███████╗███████║
+╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝      ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝
+                                                                                    
+                             ██████╗ ███████╗███╗   ██╗                             
+                            ██╔════╝ ██╔════╝████╗  ██║                             
+                            ██║  ███╗█████╗  ██╔██╗ ██║                             
+                            ██║   ██║██╔══╝  ██║╚██╗██║                             
+                            ╚██████╔╝███████╗██║ ╚████║                             
+                             ╚═════╝ ╚══════╝╚═╝  ╚═══╝                             
+                                                                                    
+                 ██████╗██╗  ██╗███████╗ ██████╗██╗  ██╗███████╗██████╗             
+                ██╔════╝██║  ██║██╔════╝██╔════╝██║ ██╔╝██╔════╝██╔══██╗            
+                ██║     ███████║█████╗  ██║     █████╔╝ █████╗  ██████╔╝            
+                ██║     ██╔══██║██╔══╝  ██║     ██╔═██╗ ██╔══╝  ██╔══██╗            
+                ╚██████╗██║  ██║███████╗╚██████╗██║  ██╗███████╗██║  ██║            
+                 ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝            
+                                                                          """)
+  print(f"{Fore.MAGENTA}[!] Finding a valid Nitro code is almost impossible. This tool just creates codes and checks if they were valid or not.")
+  print(f"{Fore.CYAN}Github: https://github.com/Sxvxgee{Fore.RESET}")
+  print(f"""{Fore.CYAN}[1] Automatic valid code finder.
+[2] Custom valid code finder.{Fore.RESET}""")
+  chosen_mode = valid_int("> ")
+  if int(chosen_mode) == 1:
+    print(f"{Fore.MAGENTA}[!] Attempting to find a valid code...\n[!] You'll hear a beep sound once a valid code is found.{Fore.RESET}")
+    thread_run_until_find()
+    winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS)
+  else:
+    times = valid_int("How many codes would you like to generate? ")
+    if times >= 10:
+      max_threads = int(round(times/2)) 
+      while True:
+        threads_ = valid_int(f"How many threads would you like to use? [Speeds up the generation, Max {max_threads}] ")
+        if threads_ > max_threads:
+          error(f"Max threads is {max_threads} only.")
+        else:
+          break
+    else:
+      threads_ = 1
+    if times >= 50:
+      print(f'''{Fore.CYAN}[!] The terminal will most likely become messed up & hard to read.
+  [!] You can know if you got any valid Nitro code by checking if a file named "valid.txt" was created.{Fore.RESET}''')
+      await asyncio.sleep(3)
+    print(f"{Fore.MAGENTA}[!] Generating codes...{Fore.RESET}")
+    thread_do_request(threads_, times, made)
+    print(f"\n\n{Fore.GREEN}[!] Finished generating codes.{Fore.RESET}")
+    winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS) 
+
+
+
+if __name__ == '__main__':
+  asyncio.run(main())
+  input("Press Enter to close.")
+  sys.exit()
